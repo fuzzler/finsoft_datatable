@@ -2,7 +2,7 @@
 
 //fetch.php
 
-include('connector.php');
+include('../connector.php');
 
 $column = ["id", "first_name", "last_name", "gender"];
 

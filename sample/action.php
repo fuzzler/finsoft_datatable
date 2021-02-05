@@ -2,7 +2,7 @@
 
 //action.php
 
-require('connector.php');
+require('../connector.php');
 
 if($_POST['action'] == 'edit') {
     $data = [
