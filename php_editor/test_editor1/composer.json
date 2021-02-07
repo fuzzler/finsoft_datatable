@@ -1,0 +1,11 @@
+{
+    "description": "primi tentativi di utilizzo di editor",
+    "require": {
+        "datatables.net/editor-php": "1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "DataTables\\": "vendor/datatables.net/editor-php/DataTables.php"
+        }
+    }
+}

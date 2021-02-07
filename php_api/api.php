@@ -1,0 +1,4 @@
+<?php
+
+require '../connector.php';
+

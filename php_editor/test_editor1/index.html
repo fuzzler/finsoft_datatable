@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- <link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
+	<title>TEST EDITOR 1</title>
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+
+    <link rel="stylesheet" type="text/css" href="css/editor.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="resources/syntax/shCore.css">
+	<link rel="stylesheet" type="text/css" href="resources/demo.css">
+
+	<style type="text/css" class="init">
+	
+	</style>
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+    	
+    <script type="text/javascript" language="javascript" src="js/dataTables.editor.min.js"></script>
+	<script type="text/javascript" language="javascript" src="resources/syntax/shCore.js"></script>
+	<script type="text/javascript" language="javascript" src="resources/demo.js"></script>
+	<script type="text/javascript" language="javascript" src="resources/editor-demo.js"></script>
+
+    <script type="text/javascript" language="javascript" class="init">
+	
+        var editor; // use a global for the submit and return data rendering in the examples
+
+        $(document).ready(function() {
+            editor = new $.fn.dataTable.Editor( {
+                ajax: "api/fetch.php",
+                table: "#users_table",
+                fields: [ {
+                        label: "ID:",
+                        name: "users.id"
+                    },{
+                        label: "Username:",
+                        name: "users.username"
+                    }, {
+                        label: "Nome:",
+                        name: "users.name"
+                    }, {
+                        label: "Email:",
+                        name: "users.email"
+                    }, {
+                        label: "Città:",
+                        name: "users.city"
+                    }
+                ]
+            } );
+
+            $('#users_table').DataTable( {
+                // Opzione DOM (https://datatables.net/reference/option/dom)
+                dom: "Bfrtip", // B=button + dom option (filtering input,processing,table,info,pagination)
+                ajax: "api/fetch.php",
+                columns: [
+                    { data: "users.id" },
+                    { data: "users.username"},
+                    { data: "users.name"},
+                    { data: "users.email" },
+                    { data: "cities.name" }
+                    
+                ],
+                select: true, // permette di selezionare le righe della tabella
+                // Aggiunge i bottoni alla tabella (https://datatables.net/extensions/buttons/)
+                buttons: [
+                    { extend: "create", editor: editor , text: "Nuovo"},
+                    { extend: "edit",   editor: editor , text: "Modifica"},
+                    { extend: "remove", editor: editor , text: "Elimina"}
+                ]
+            } );
+        } );
+	</script>
+</head>
+
+<body class="dt-example php">
+	<div class="container">
+        <h1>Test Editor</h1>
+        <h3>Tabella Utenti PHP-testdb</h3>
+
+        <div class="demo-html">
+            <table id="users_table" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Città</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div><!-- fine container -->
+</body>
+</html>
