@@ -18,28 +18,28 @@ use
 // Editor tabella staff_newyork
 $editor = Editor::inst( $db, 'users' )
     ->fields(
-        Field::inst( 'users.id' ),
-            // ->validator( Validate::notEmpty( ValidateOptions::inst()
-            //     ->message( 'ID richiesto' )	
-            // ) ),
+        // Campo ID automaticamente gestito dal DB
+        Field::inst( 'users.id' )->set( false ),
+            // ->validator( Validate::numeric() ),
         Field::inst( 'users.username' )
-            ->validator( Validate::notEmpty( ValidateOptions::inst()
-                ->message( 'Username richiesto' )	
-            ) ),
-        Field::inst( 'users.name' )
             ->validator( Validate::notEmpty( 
-                ValidateOptions::inst()->allowEmpty( false )	
+                ValidateOptions::inst()->message( 'Username richiesto' )	
             ) ),
+        Field::inst( 'users.name' ), // puo essere null
         Field::inst( 'users.email' )
-            ->validator( Validate::notEmpty( 
-                ValidateOptions::inst()->allowEmpty( false )	
-            ) ),
+            ->validator( Validate::email( 
+                ValidateOptions::inst()
+                ->message('Inserisci un indirizzo email valido!' )  
+            )),
+            
         Field::inst( 'users.city' )
-            ->validator( Validate::numeric( 
-                ValidateOptions::inst()->allowEmpty( false )
-                ->message( 'Città richiesto' )	
-            ) ),
-        // campo join
+            ->options( Options::inst()
+                ->table( 'cities' )
+                ->value( 'id' )
+                ->label( 'name' )
+            )
+            ->validator( Validate::dbValues() ),
+
         Field::inst( 'cities.name' )
     )
     ->leftJoin( 'cities', 'cities.id', '=', 'users.city' )

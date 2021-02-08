@@ -35,10 +35,13 @@
             editor = new $.fn.dataTable.Editor( {
                 ajax: "api/fetch.php",
                 table: "#users_table",
-                fields: [ {
-                        label: "ID:",
-                        name: "users.id"
-                    },{
+                fields: [ 
+                    // {
+                    //     label: "ID:",
+                    //     name: "users.id"
+                    //     // ,type: "number"
+                    // },
+                    {
                         label: "Username:",
                         name: "users.username"
                     }, {
@@ -49,21 +52,39 @@
                         name: "users.email"
                     }, {
                         label: "Città:",
-                        name: "users.city"
+                        name: "users.city",
+                        type: "select"
                     }
                 ]
+            } );
+
+            // Activate an inline edit on click of a table cell
+            $('#users_table').on( 'click', 'tbody td:not(:first-child)', function (e) {
+                editor.inline( this, {
+                    onBlur: 'submit'
+                });
             } );
 
             $('#users_table').DataTable( {
                 // Opzione DOM (https://datatables.net/reference/option/dom)
                 dom: "Bfrtip", // B=button + dom option (filtering input,processing,table,info,pagination)
-                ajax: "api/fetch.php",
+                ajax: {
+                    url: "api/fetch.php",
+                    type: 'POST'
+                },
                 columns: [
+                    // CHECK BOX (per selezionare il campo)
+                    {
+                        data: null,
+                        defaultContent: '',
+                        className: 'select-checkbox',
+                        orderable: false
+                    },
                     { data: "users.id" },
                     { data: "users.username"},
                     { data: "users.name"},
                     { data: "users.email" },
-                    { data: "cities.name" }
+                    { data: "cities.name", editField: "users.city"}
                     
                 ],
                 select: true, // permette di selezionare le righe della tabella
@@ -87,6 +108,7 @@
             <table id="users_table" class="display" style="width:100%">
                 <thead>
                     <tr>
+                        <th></th> <!--select-checkbox-->
                         <th>ID</th>
                         <th>Username</th>
                         <th>Nome</th>
