@@ -16,33 +16,30 @@ use
 
 
 // Editor tabella staff_newyork
-$editor = Editor::inst( $db, 'users' )
+$editor = Editor::inst( $db, 'cities' )
     ->fields(
         // Campo ID automaticamente gestito dal DB
-        Field::inst( 'users.id' )->set( false ),
+        Field::inst( 'cities.id' )->set( false ),
             // ->validator( Validate::numeric() ),
-        Field::inst( 'users.username' )
+        Field::inst( 'cities.name' )
             ->validator( Validate::notEmpty( 
-                ValidateOptions::inst()->message( 'Username richiesto' )	
+                ValidateOptions::inst()->message( 'Nome città richiesto' )	
             ) ),
-        Field::inst( 'users.name' ), // puo essere null
-        Field::inst( 'users.email' )
-            ->validator( Validate::email( 
-                ValidateOptions::inst()
-                ->message('Inserisci un indirizzo email valido!' )  
-            )),
-        Field::inst( 'users.city' )
+        Field::inst( 'cities.province' )
             ->options( Options::inst()
-                ->table( 'cities' )
+                ->table( 'provinces' )
                 ->value( 'id' )
                 ->label( 'name' )
             )
-            ->validator( Validate::dbValues() ),
+            ->validator( Validate::dbValues(),Validate::notEmpty( 
+                ValidateOptions::inst()->message( 'Procincia richiesta' )	
+            ) ),
+        Field::inst( 'cities.description' ), // puo essere null            
             
         // campo join
-        Field::inst( 'cities.name' )
+        Field::inst( 'provinces.name' )
     )
-    ->leftJoin( 'cities', 'cities.id', '=', 'users.city' )
+    ->leftJoin( 'provinces', 'provinces.id', '=', 'cities.province' )
     ->process($_POST)
     ->json();
    
